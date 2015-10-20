@@ -1,25 +1,34 @@
 package mailBox;
 
-
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
-
+@Path("/micro")
 @Stateless
-public class MailBoxManager implements IMailBoxManager {
+public class MailBoxManagerRest implements IMailBoxManager {
 
 	@PersistenceContext
 	private EntityManager em;
 	
 	
-	public MailBoxManager() {}
+	public MailBoxManagerRest() {}
 	
-	
-	public List<Message> readAUserNewMessages(String userName) {
+	@GET
+	@Path("/readAUserNewMessages")
+	@Produces(MediaType.TEXT_XML)
+	public List<Message> readAUserNewMessages(@QueryParam("userName") String userName) {
 		
 		MailBox mail;
 		List<Message> listMessages;
@@ -29,8 +38,10 @@ public class MailBoxManager implements IMailBoxManager {
 		return listMessages;
 	}
 	
-	
-	public List<Message> readAUserAllMessages(String userName) {
+	@GET
+	@Path("/readAUserAllMessages")
+	@Produces(MediaType.TEXT_XML)
+	public List<Message> readAUserAllMessages(@QueryParam("userName") String userName) {
 		
 		MailBox mail;
 		List<Message> listMessages;
@@ -40,34 +51,42 @@ public class MailBoxManager implements IMailBoxManager {
 		return listMessages;
 	}
 	
-	
-	public void deleteAUserMessage(String userName, Message message) {
+	@DELETE
+	@Path("/deleteAUserMessage")
+	public void deleteAUserMessage(@QueryParam("userName") String userName, Message message) {
 		MailBox mail;
 		mail = getMailBoxByUserName(userName);
 		mail.deleteAMessage(message);
 	}
 	
-	
+	@DELETE
+	@Path("/deleteAUserReadMessages")
 	public void deleteAUserReadMessages(String userName) {
 		MailBox mail;
 		mail = getMailBoxByUserName(userName);
 		mail.deleteReadMessages();
 	}
 	
-	
+	@POST
+	@Path("/sendAMessageToABox")
+    @Consumes({MediaType.TEXT_PLAIN})
 	public void sendAMessageToABox(String senderName, String ReceiverName, Message message) {
 		MailBox mail;
 		mail = getMailBoxByUserName(ReceiverName);
 		mail.addMessage(message);
 	}
 	
-	
+	@POST
+	@Path("/addUser")
+    @Consumes({MediaType.TEXT_PLAIN})
 	public void addUser(String userName) {
 		MailBox mail = new MailBox(userName);
 		em.persist(mail);
 	}
 	
-	public void removeUser(String userName) {
+	@DELETE
+	@Path("/removeUser")
+	public void removeUser(@QueryParam("userName") String userName) {
 		MailBox mail;
 		mail = getMailBoxByUserName(userName);
 		em.remove(mail);

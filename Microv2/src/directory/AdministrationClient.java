@@ -20,7 +20,7 @@ public class AdministrationClient {
 	
 		try {
 			InitialContext ic = new InitialContext();
-			IUserDirectory iuserDirectory = (IUserDirectory) ic.lookup("directoryServerPart.IUserDirectory");
+			IUserDirectory iuserDirectory = (IUserDirectory) ic.lookup("directory.IUserDirectory");
 			
 			boolean again = true;
 			

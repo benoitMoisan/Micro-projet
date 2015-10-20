@@ -2,6 +2,9 @@ package mailBox;
 
 import java.util.List;
 
+import javax.ejb.Remote;
+
+@Remote
 public interface IMailBoxManager {
 
 	public List<Message> readAUserNewMessages(String UserName);

@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="/home/benoit/glassfish4/glassfish4/glassfish/lib/javaee.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/appServ/glassfish4/glassfish/lib/javaee.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/asm-3.1.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jackson-core-asl-1.9.2.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jackson-jaxrs-1.9.2.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jackson-mapper-asl-1.9.2.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jackson-xc-1.9.2.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jersey-client-1.17.1.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jersey-core-1.17.1.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jersey-json-1.17.1.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jersey-server-1.17.1.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jersey-servlet-1.17.1.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jettison-1.1.jar"/>
+	<classpathentry kind="lib" path="/mci/ei1316/moisan_b/Téléchargements/JAXRS-example/jars/jsr311-api-1.1.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
