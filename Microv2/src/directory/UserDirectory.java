@@ -5,9 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import mailBox.IMailBoxManager;
+import mailBox.MailBoxManager;
 
 
 @Stateless
@@ -21,12 +25,27 @@ public class UserDirectory implements IUserDirectory{
 		users = lookUpAllUsers();
 		if(!users.contains(user)) {
 			em.persist(user);
+			try {
+				InitialContext ic = new InitialContext();
+				IMailBoxManager iMailBoxManager = (IMailBoxManager) ic.lookup("mailBox.IMailBoxManager");
+				iMailBoxManager.addUser(user.getUserName());
+			} catch(Exception e) {
+	            e.printStackTrace();
+	        }
 		}		
 	}
 
 	public void removeUser(FinalUser user) {
 		FinalUser user0 = em.merge(user);
 		em.remove(user0);
+		try {
+			InitialContext ic = new InitialContext();
+			IMailBoxManager iMailBoxManager = (IMailBoxManager) ic.lookup("mailBox.IMailBoxManager");
+			iMailBoxManager.removeUser(user0.getUserName());
+		} catch(Exception e) {
+            e.printStackTrace();
+        }
+		
 	}
 	
 	public List<FinalUser> lookUpAllUsers() {

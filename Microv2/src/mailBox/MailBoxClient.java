@@ -6,8 +6,6 @@ import java.util.Scanner;
 
 import javax.naming.InitialContext;
 
-import directory.IUserDirectory;
-
 public class MailBoxClient {
 
 	private final static Scanner sc = new Scanner(System.in); 
@@ -50,6 +48,9 @@ public class MailBoxClient {
 						envoyerUnMail(iMailBoxManager);
 						break;
 					case 8 :
+						envoyerUnMailATous(iMailBoxManager);
+						break;
+					case 9 :
 						again = false;
 						break;
 					default :
@@ -72,8 +73,9 @@ public class MailBoxClient {
 		System.out.println("4 - Lire les nouveaux mails d'un utilisateur");
 		System.out.println("5 - Supprimer un mail d'un utilisateur");
 		System.out.println("6 - Supprimer tous les mails d'un utilisateur");
-		System.out.println("7 - Envoyer un mail");
-		System.out.println("8 - Quitter l'application");
+		System.out.println("7 - Envoyer un mail à quelqu'un");
+		System.out.println("8 - Envoyer un mail sur la liste commune");
+		System.out.println("9 - Quitter l'application");
 		System.out.println();
 		System.out.print("Veuillez saisir le numéro de l'action à executer : ");
 		menu = sc.nextInt();
@@ -175,6 +177,29 @@ String nomUtilisateur;
 		message.setDate(new java.util.Date());
 		
 		iMailBoxManager.sendAMessageToABox(message);
+	}
+	
+	public static void envoyerUnMailATous(IMailBoxManager iMailBoxManager) {
+		String senderName;
+		String body;
+		String subject;
+		Message message;
+		
+		System.out.print("Veuillez saisir le nom de l'envoyeur : ");
+		senderName = sc.nextLine();
+		System.out.println();
+		System.out.println();
+		System.out.print("Veuillez saisir le sujet : ");
+		subject = sc.nextLine();
+		System.out.println();
+		System.out.print("Veuillez saisir le body : ");
+		body = sc.nextLine();
+		System.out.println();
+		
+		message = new Message(senderName, null, subject, body);
+		message.setDate(new java.util.Date());
+		
+		iMailBoxManager.sendNews(message);
 	}
 	
 }

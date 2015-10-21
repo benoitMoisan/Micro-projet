@@ -6,9 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import directory.FinalUser;
+import directory.IUserDirectory;
+import directory.NewsGroupRights;
 
 import java.util.Collection;
 
@@ -120,7 +125,28 @@ public class MailBoxManager implements IMailBoxManager {
 	
 	
 	public void sendNews(Message message) {
-		
+		try {
+			InitialContext ic = new InitialContext();
+			IUserDirectory iuserDirectory = (IUserDirectory) ic.lookup("directory.IUserDirectory");
+			
+			NewsGroupRights newsGroupRights = iuserDirectory.lookUpAUserRights(new FinalUser(message.getSenderName()));
+			if(newsGroupRights.getWriteAccess()) {
+				List<FinalUser> list = iuserDirectory.lookUpAllUsers();
+				Iterator<FinalUser> it = list.iterator();
+				while(it.hasNext()) {
+					FinalUser user = it.next();
+					if(user.getUserRights().getReadAccess()) {
+						Message messageTemp = new Message(message.getSenderName(), null, message.getSubject(), message.getBody());
+						messageTemp.setDate(message.getDate());
+						messageTemp.setReceiverName(user.getUserName());
+						sendAMessageToABox(messageTemp);
+					}
+				}
+			}
+			
+		} catch(Exception e) {
+            e.printStackTrace();
+        }
 	}
 	
 	

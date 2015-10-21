@@ -7,32 +7,41 @@
   <property environment="env"/>
   <property name="glassfish.home" value="${env.GLASSFISH_HOME}"/>
 
+	<target name="init">
+		<mkdir dir="directory"/>
+		<mkdir dir="mailBox"/>
+	</target>
 	
-	
-  <target name="init-directory">
-  	<mkdir dir="directory"/>
-  </target>
- 
-  <target name="init-mailBox">
-	 <mkdir dir="mailBox"/>
-  </target>
 	
   <target name="all">
   </target>
 	
-	<target name="build-mailBox" depends="init-mailBox">
+	<target name="build" depends="init">
 		<javac classpath="${glassfish.home}/lib/javaee.jar" 
+				  	           srcdir="src/"
+				  	           destdir="."
+				  	           includes="*/*.java"/>
+	</target>
+	
+	<target name="build-mailBox" depends="init">
+		<javac classpath="${glassfish.home}/lib/javaee.jar:./src/directory/FinalUser.java" 
 		  	           srcdir="src/mailBox"
 		  	           destdir="."
 		  	           includes="MailBoxClient.java, Box.java, IBox.java, IMailBox.java, IMailBoxManager.java, MailBox.java, MailBoxManager.java, Message.java"/>
 	</target>
 
-  <target name="build-directory" description="build" depends="init-directory">
+  <target name="build-directory" description="build" depends="init">
   	<javac classpath="${glassfish.home}/lib/javaee.jar" 
   	           srcdir="src/directory"
   	           destdir="."
   	           includes="*.java"/>
   </target>
+	
+	<target name="build-jar"  >
+		<jar destfile="microProjet.jar"
+			         basedir="."
+				 includes="META-INF/persistence.xml,mailBox/, directory/"/>
+	</target>
 	
 	<target name="build-mailBox-jar" 
 	        description="Build jar archive" >
@@ -48,7 +57,14 @@
 	 includes="META-INF/persistence.xml,directory/"/>
   </target>
 
-
+	<target name="deploy">
+	 <exec executable="${glassfish.home}/bin/asadmin" 
+	          failonerror="true" 
+	          vmlauncher="false">
+	      <arg line="deploy --retrieve . microProjet.jar"/>
+	    </exec>
+	  </target>
+	
   <target name="deploy-directory" 
           description="deploy">
     <exec executable="${glassfish.home}/bin/asadmin" 
@@ -64,6 +80,15 @@
 	          failonerror="true" 
 	          vmlauncher="false">
 	      <arg line="deploy --retrieve . microProjetMailBox.jar"/>
+	    </exec>
+	  </target>
+	
+	<target name="undeploy" 
+	          description="undeploy">
+	    <exec executable="${glassfish.home}/bin/asadmin" 
+	          failonerror="true" 
+	          vmlauncher="false">
+	      <arg line="undeploy microProjet"/>
 	    </exec>
 	  </target>
 
@@ -83,6 +108,13 @@
 	          vmlauncher="false">
 	      <arg line="undeploy microProjetMailBox"/>
 	    </exec>
+	  </target>
+	
+	<target name="clean" 
+	          description="clean up" >
+	    <delete file="microProjet.jar"/>
+	    <delete dir="directory"/>
+		<delete dir="mailBox"/>
 	  </target>
 
   <target name="clean-directory" 

@@ -1,12 +1,12 @@
 package mailBox;
 
-
+/*
 import java.io.IOException;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
- 
+ */
 public class Publisher {
- 
+ /*
     static final String BASE_URI = "http://localhost:9999/MyServer/";
  
     public static void main(String[] args) {
@@ -25,4 +25,5 @@ public class Publisher {
             e.printStackTrace();
         }
     }
+    */
 }

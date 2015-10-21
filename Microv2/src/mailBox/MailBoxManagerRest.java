@@ -1,5 +1,6 @@
 package mailBox;
 
+/*
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -15,10 +16,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+
 @Path("/micro")
 @Stateless
-public class MailBoxManagerRest implements IMailBoxManager {
 
+*/
+public class MailBoxManagerRest {
+/*
 	@PersistenceContext
 	private EntityManager em;
 	
@@ -47,7 +51,7 @@ public class MailBoxManagerRest implements IMailBoxManager {
 		List<Message> listMessages;
 		
 		mail = getMailBoxByUserName(userName);
-		listMessages = mail.readAllMessages();
+		
 		return listMessages;
 	}
 	
@@ -103,5 +107,5 @@ public class MailBoxManagerRest implements IMailBoxManager {
 		q.setParameter("userName", userName);
 		return (MailBox)q.getSingleResult();
 	}
-	
+	*/
 }
