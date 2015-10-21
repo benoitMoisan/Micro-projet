@@ -1,6 +1,8 @@
 package mailBox;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import java.util.Collection;
 
 @Stateless
 public class MailBoxManager implements IMailBoxManager {
@@ -21,44 +24,86 @@ public class MailBoxManager implements IMailBoxManager {
 	
 	public List<Message> readAUserNewMessages(String userName) {
 		
+		List<Message> newMessages = new ArrayList();
+/*
+		Query q = em.createQuery("select m from Message m where m.receiverName = :user and m.alreadyRead = 0");
+		q.setParameter("user", userName);
+
+		newMessages = (List<Message>) q.getResultList();
+
+		for (int i=0;i<newMessages.size();i++)
+		{					
+			newMessages.get(i).setIsRead();
+			em.persist(newMessages.get(i));
+		}
+		*/
+		
 		MailBox mail;
-		List<Message> listMessages;
+		List<Message> listMessages = new ArrayList<Message>();
 		
 		mail = getMailBoxByUserName(userName);
-		listMessages = mail.readNewMessages();
+		Iterator<Message> it = mail.getListMessages().iterator();
+		while(it.hasNext()) {
+			Message message = it.next();
+			if(message.isRead() == false) {
+				message.setIsRead(true);
+				em.persist(message);
+				listMessages.add(message);
+			}
+		} 
+		
+		
 		return listMessages;
 	}
 	
 	
-	public List<Message> readAUserAllMessages(String userName) {
+	public Collection<Message> readAUserAllMessages(String userName) {
 		
 		MailBox mail;
-		List<Message> listMessages;
+		Collection<Message> listMessages = new ArrayList<Message>();
 		
 		mail = getMailBoxByUserName(userName);
-		listMessages = mail.readAllMessages();
+		listMessages = getMailBoxByUserName(userName).getListMessages();
+		Iterator<Message> it = listMessages.iterator();
+		while(it.hasNext()) {
+			it.next().setIsRead(true);
+		}
 		return listMessages;
 	}
 	
 	
-	public void deleteAUserMessage(String userName, Message message) {
+	public void deleteAUserMessage(String userName, int id) {
 		MailBox mail;
 		mail = getMailBoxByUserName(userName);
-		mail.deleteAMessage(message);
+		Iterator<Message> it = mail.getListMessages().iterator();
+		while(it.hasNext()) {
+			Message message = it.next();
+			if(message.getId() == id) {
+				em.remove(message);
+			}
+		}
 	}
 	
 	
 	public void deleteAUserReadMessages(String userName) {
 		MailBox mail;
 		mail = getMailBoxByUserName(userName);
-		mail.deleteReadMessages();
+		Iterator<Message> it = mail.getListMessages().iterator();
+		while(it.hasNext()) {
+			Message message = it.next();
+			if(message.isRead() == true) {
+				em.remove(message);
+			}
+			
+		}
 	}
 	
 	
-	public void sendAMessageToABox(String senderName, String ReceiverName, Message message) {
+	public void sendAMessageToABox(Message message) {
 		MailBox mail;
-		mail = getMailBoxByUserName(ReceiverName);
-		mail.addMessage(message);
+		mail = getMailBoxByUserName(message.getReceiverName());
+		mail.getListMessages().add(message);
+		message.setMailBox(mail);
 	}
 	
 	

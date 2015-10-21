@@ -1,5 +1,6 @@
 package mailBox;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.Remote;
@@ -8,10 +9,10 @@ import javax.ejb.Remote;
 public interface IMailBoxManager {
 
 	public List<Message> readAUserNewMessages(String UserName);
-	public List<Message> readAUserAllMessages(String UserName);
-	public void deleteAUserMessage(String userName, Message message);
+	public Collection<Message> readAUserAllMessages(String UserName);
+	public void deleteAUserMessage(String userName, int id);
 	public void deleteAUserReadMessages(String userName);
-	public void sendAMessageToABox(String senderName, String ReceiverName, Message message);
+	public void sendAMessageToABox(Message message);
 	public void addUser(String userName);
 	public void removeUser(String userName);
 	public void sendNews(Message message);
